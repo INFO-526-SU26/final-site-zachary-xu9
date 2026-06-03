@@ -1,11 +1,11 @@
 ---
-title: "Proposal title"
+title: "Final Project - US GAS Prices Analysis"
 subtitle: "Proposal"
 author: 
-  - name: "Team Name"
+  - name: "Zachary Zhicheng Xu"
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Project description"
+description: "US Gas Prices Analysis"
 format:
   html:
     code-tools: true
@@ -22,6 +22,7 @@ execute:
 #| label: load-pkgs
 #| message: false
 library(tidyverse)
+library(here)
 ```
 
 ## Dataset
@@ -29,16 +30,79 @@ library(tidyverse)
 ```{r}
 #| label: load-dataset
 #| message: false
+
+# Remote reading
+weekly_gas_prices_remote <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-01/weekly_gas_prices.csv')
+
+# Local reading
+weekly_gas_prices_local <- read_csv(here("data", "weekly_gas_prices.csv"))
+
+glimpse(weekly_gas_prices_local)
+
 ```
 
-A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
+Nowadays, the vehicle is one of the important parts in our daily life, as we need to drive vehicles for work, pleasure, school, and many other activities. Consider this, the blood of the vehicles, gas, is sensitive for every American. Before 2018, I rarely paid attention to the gas price. However, the gas price greatly changed and increased almost every day in 2022, during the COVID-19 pandemic. I still remember that I paid around \$7 per gallon for gasoline in California in late 2022. I noticed the gas price can undergo significant changes due to special events, like economic events, pandemic events, and others. I became interested in understanding how gas prices can be changed during special events. It led me to choose Weekly US Gas Prices for my final project. It can answer me the questions that are related to gas price, for example, how a special event, like the COVID-19 pandemic, influences the gas price.
 
-Make sure to load the data and use inline code for some of this information.
+The data is from the U.S. Energy Information Administration (EIA). The variables include "date", "fuel", "grade", "formulation", and "price". The dates are between 1990 and 2025, which is enough for me to analyze the price change for a couple of special events. The fuel is the type of fuel, like gasoline or diesel. The grade is the grade for gas, like regular, mid-grade, or premium. The formulation only applies to gasoline, such as conventional and reformulated. The price is the average US retail price per gallon in US currency. I am able to do analysis for my questions by using this dataset.
 
 ## Questions
 
-The two questions you want to answer.
+1.  How did US Fuel prices change during special events between 1990 and 2025? (The major events may include, but are not limited to, the Iraq War, the Global Financial Crisis, and the COVID-19 Pandemic.)
+2.  How does the grade and formulation influence the gas price? Is the difference changed over?
 
 ## Analysis plan
 
--   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+- First question:
+
+  - Variables may use:
+
+    - date
+    - fuel
+    - grade
+    - price
+
+  - Variables may create:
+
+    - year (from date)
+    - event name \*
+    - event_period \* (\* from external resource, like the Iraq War, 2003)
+
+  - Visualizations:
+
+    - Line plots
+      - Long-term gas price analysis
+    - Faceted line plots
+      - Compare different fuel categories
+
+    (\* Additional visualizations may be developed depending on the analysis progress.)
+
+- Second question:
+
+  - Variables may use:
+
+    - date
+    - grade
+    - formulation
+    - price
+
+  - Variables may create:
+
+    - year (from date)
+    - average price by grade and formulation
+
+  - Visualizations:
+
+    - Line plots
+
+      - Long-term gas price analysis for different grades
+
+    - Box plots
+
+      - Compare price distributions by grades
+      - identify variability and outlier
+
+    (\* Additional visualizations may be developed depending on the analysis progress.)
+
+- Narrative
+
+  - All plots will have narrative to explain my analysis.
