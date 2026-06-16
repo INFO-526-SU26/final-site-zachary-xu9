@@ -2,30 +2,30 @@
   {
     "objectID": "proposal.html",
     "href": "proposal.html",
-    "title": "Proposal title",
+    "title": "Final Project - US GAS Prices Analysis",
     "section": "",
-    "text": "library(tidyverse)"
+    "text": "library(tidyverse)\nlibrary(here)"
   },
   {
     "objectID": "proposal.html#dataset",
     "href": "proposal.html#dataset",
-    "title": "Proposal title",
+    "title": "Final Project - US GAS Prices Analysis",
     "section": "Dataset",
-    "text": "Dataset\nA brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.\nMake sure to load the data and use inline code for some of this information."
+    "text": "Dataset\n\n# Remote reading\nweekly_gas_prices_remote &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-01/weekly_gas_prices.csv')\n\n# Local reading\nweekly_gas_prices_local &lt;- read_csv(here(\"data\", \"weekly_gas_prices.csv\"))\n\nglimpse(weekly_gas_prices_local)\n\nRows: 22,360\nColumns: 5\n$ date        &lt;date&gt; 1990-08-20, 1990-08-20, 1990-08-27, 1990-08-27, 1990-09-0…\n$ fuel        &lt;chr&gt; \"gasoline\", \"gasoline\", \"gasoline\", \"gasoline\", \"gasoline\"…\n$ grade       &lt;chr&gt; \"regular\", \"regular\", \"regular\", \"regular\", \"regular\", \"re…\n$ formulation &lt;chr&gt; \"all\", \"conventional\", \"all\", \"conventional\", \"all\", \"conv…\n$ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252, 1.…\n\n\nNowadays, the vehicle is one of the important parts in our daily life, as we need to drive vehicles for work, pleasure, school, and many other activities. Consider this, the blood of the vehicles, gas, is sensitive for every American. Before 2018, I rarely paid attention to the gas price. However, the gas price greatly changed and increased almost every day in 2022, during the COVID-19 pandemic. I still remember that I paid around $7 per gallon for gasoline in California in late 2022. I noticed the gas price can undergo significant changes due to special events, like economic events, pandemic events, and others. I became interested in understanding how gas prices can be changed during special events. It led me to choose Weekly US Gas Prices for my final project. It can answer me the questions that are related to gas price, for example, how a special event, like the COVID-19 pandemic, influences the gas price.\nThe data is from the U.S. Energy Information Administration (EIA). The variables include “date”, “fuel”, “grade”, “formulation”, and “price”. The dates are between 1990 and 2025, which is enough for me to analyze the price change for a couple of special events. The fuel is the type of fuel, like gasoline or diesel. The grade is the grade for gas, like regular, mid-grade, or premium. The formulation only applies to gasoline, such as conventional and reformulated. The price is the average US retail price per gallon in US currency. I am able to do analysis for my questions by using this dataset."
   },
   {
     "objectID": "proposal.html#questions",
     "href": "proposal.html#questions",
-    "title": "Proposal title",
+    "title": "Final Project - US GAS Prices Analysis",
     "section": "Questions",
-    "text": "Questions\nThe two questions you want to answer."
+    "text": "Questions\n\nHow did US Fuel prices change during special events between 1990 and 2025? (The major events may include, but are not limited to, the Iraq War, the Global Financial Crisis, and the COVID-19 Pandemic.)\nHow does the grade and formulation influence the gas price? Is the difference changed over?"
   },
   {
     "objectID": "proposal.html#analysis-plan",
     "href": "proposal.html#analysis-plan",
-    "title": "Proposal title",
+    "title": "Final Project - US GAS Prices Analysis",
     "section": "Analysis plan",
-    "text": "Analysis plan\n\nA plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any)."
+    "text": "Analysis plan\n\nFirst question:\n\nVariables may use:\n\ndate\nfuel\ngrade\nprice\n\nVariables may create:\n\nyear (from date)\nevent name *\nevent_period * (* from external resource, like the Iraq War, 2003)\n\nVisualizations:\n\nLine plots\n\nLong-term gas price analysis\n\nFaceted line plots\n\nCompare different fuel categories\n\n\n(* Additional visualizations may be developed depending on the analysis progress.)\n\nSecond question:\n\nVariables may use:\n\ndate\ngrade\nformulation\nprice\n\nVariables may create:\n\nyear (from date)\naverage price by grade and formulation\n\nVisualizations:\n\nLine plots\n\nLong-term gas price analysis for different grades\n\nBox plots\n\nCompare price distributions by grades\nidentify variability and outlier\n\n\n(* Additional visualizations may be developed depending on the analysis progress.)\n\nNarrative\n\nAll plots will have narrative to explain my analysis."
   },
   {
     "objectID": "index.html",
@@ -42,6 +42,13 @@
     "text": "Add project abstract here."
   },
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This project was developed by [Team Name] For INFO 526 - Data Analysis and Visualization at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\nTeam member 1: One sentence description of Team member 1 (e.g., year, major, etc.).\nTeam member 2: One sentence description of Team member 2 (e.g., year, major, etc.).\nTeam member 3: One sentence description of Team member 3 (e.g., year, major, etc.).\nTeam member 4: One sentence description of Team member 4 (e.g., year, major, etc.)."
+  },
+  {
     "objectID": "presentation.html#quarto",
     "href": "presentation.html#quarto",
     "title": "Project title",
@@ -53,7 +60,7 @@
     "href": "presentation.html#layouts",
     "title": "Project title",
     "section": "Layouts",
-    "text": "Layouts\nYou can use plain text\n\n\n\nor bullet points1\n\n\nor in two columns\n\n\n\nlike\nthis\n\nAnd add footnotes"
+    "text": "Layouts\nYou can use plain text\n\n\n\nor bullet points1\n\n\nor in two columns\n\n\nlike\nthis\n\nAnd add footnotes"
   },
   {
     "objectID": "presentation.html#code",
@@ -103,12 +110,5 @@
     "title": "Project title",
     "section": "Feeling adventurous?",
     "text": "Feeling adventurous?\n\nYou are welcomed to use the default styling of the slides. In fact, that’s what I expect majority of you will do. You will differentiate yourself with the content of your presentation.\nBut some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "This project was developed by [Team Name] For INFO 526 - Data Analysis and Visualization at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\nTeam member 1: One sentence description of Team member 1 (e.g., year, major, etc.).\nTeam member 2: One sentence description of Team member 2 (e.g., year, major, etc.).\nTeam member 3: One sentence description of Team member 3 (e.g., year, major, etc.).\nTeam member 4: One sentence description of Team member 4 (e.g., year, major, etc.)."
   }
 ]
