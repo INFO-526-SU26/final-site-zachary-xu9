@@ -5,7 +5,7 @@ author:
   - name: "Zachary Zhicheng Xu"
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "US Gas Prices Analysis"
+description: "US Gas Prices Trend Analysis"
 format:
   html:
     code-tools: true

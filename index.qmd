@@ -1,11 +1,11 @@
 ---
 title: "Project Title"
-subtitle: "INFO 526 - Summer 2024 - Final Project"
+subtitle: "INFO 526 - Summer 2026 - Final Project"
 author: 
-  - name: "Team name"
+  - name: "Zachary Zhicheng Xu"
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Project description"
+description: "US Gas Prices Trend Analysis"
 format:
    html:
     code-tools: true
@@ -20,3 +20,183 @@ execute:
 ## Abstract
 
 Add project abstract here.
+## 0 - Setup
+
+```{r setup}
+if (!require("pacman"))
+  install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               here,
+               openintro,
+               patchwork,
+               scales,
+               lubridate,
+               ggrepel)
+```
+# Question 1: How did US Fuel prices change during major events between 2002 and 2025? (the Iraq War 2003, the Global Financial Crisis 2008, and the COVID-19 Pandemic 2020-2022.)
+
+## Introduction
+
+For this question, I will focus on three major events between 2002 and 2025. The three major events are the Iraq War (2023), the 2008 Global Financial Crisis (2008), and the COVID-19 Pandemic (2020). By comparing fuel price trends across these major events, we can understand how different major events, war, the Great Depression, and the pandemic, influenced the US fuel market.  
+
+## Approach
+
+There have been three major events for analysis: the Iraq War (2003), the 2008 Global Financial Crisis (2008), and the COVID-19 Pandemic (2020). These events will be shown by the time periods, and highlighted on the visualizations by using shaded regions in the plots.  
+First of all, I will check if different gasoline grades have different price trends between 2002 and 2025.
+Then, I will make the annotated time series line chart. It will show the gasoline and diesel prices. If the price trends are similar for different gasoline grades between 2002 and 2025, then I will just use grade "all" for gasoline. The shaded regions are for major event periods.
+The last step is a faceted line plot. It will show all available fuel grades, which include gasoline and diesel. The separate panels can be used for each fuel grade, and the shaded regions will be used for major event periods. 
+
+## Analysis
+```{r 1-data}
+gas_prices <- read_csv(here("data", "weekly_gas_prices.csv")) |>
+  mutate(date = as.Date(date))
+
+glimpse(gas_prices)
+```
+
+```{r 1-events}
+events <- tribble(
+  ~event_name, ~event_start, ~event_end,
+  "The Iraq War",
+  as.Date("2003-01-01"),
+  as.Date("2003-06-01"),
+
+  "The 2008 Global Financial Crisis",
+  as.Date("2007-08-09"),
+  as.Date("2009-06-30"),
+
+  "The COVID-19 Pandemic",
+  as.Date("2020-03-11"),
+  as.Date("2023-05-05")
+)
+```
+
+```{r 1-compare-gasoline}
+compare_gasoline <- gas_prices |>
+  filter(
+    fuel == "gasoline",
+    grade %in% c("all", "regular", "midgrade", "premium"),
+    formulation == "all",
+    date >= as.Date("2002-01-01")
+  )
+
+ggplot(
+  compare_gasoline,
+  aes(
+    x = date,
+    y = price,
+    color = grade
+  )
+) +
+  geom_line() +
+  labs(
+        title = "Compare Gasoline Price by Grade",
+        x = "Year",
+        y = "Price",
+        color = "Gasoline Grade"
+  )
+```
+
+```{r 1-fuel-compare-data}
+fuel_compare <- gas_prices |>
+  filter(date >= as.Date("2002-01-01")) |>
+  filter(
+    (fuel == "gasoline" &
+       grade == "all" &
+       formulation == "all") |
+    (fuel == "diesel" &
+       grade == "all")
+  )
+```
+
+```{r 1-plot, fig.width=15, fig.height=5}
+ggplot(
+  fuel_compare,
+  aes(
+    x = date,
+    y = price,
+    color = fuel
+  )
+) +
+  geom_rect(
+    data = events,
+    aes(
+      xmin = event_start,
+      xmax = event_end,
+      ymin = -Inf,
+      ymax = Inf,
+      fill = event_name
+    ),
+    inherit.aes = FALSE,
+    alpha = 0.5
+  ) +
+  geom_line(linewidth = 0.6) +
+    scale_x_date(
+    date_breaks = "1 years",
+    date_labels = "%Y"
+  ) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_color_manual(
+    values = c(
+      "gasoline" = "blue",
+      "diesel" = "red"
+    )
+  ) +
+  labs(
+    title = "Gasoline and Diesel Prices during Major Events",
+    subtitle = "Prices from 2002 to 2025",
+    x = "Year",
+    y = "Price per gallon",
+    color = "Fuel",
+    fill = "Major Event"
+  ) +
+  theme_minimal()
+```
+
+
+```{r 1-fuel-all}
+fuel_all <- gas_prices |>
+  filter(formulation == "all" | is.na(formulation))
+```
+
+```{r 1-all-plot, fig.width=15, fig.height=5}
+ggplot(fuel_all, aes(x = date, y = price)) +
+  geom_rect(
+    data = events,
+    aes(
+      xmin = event_start,
+      xmax = event_end,
+      ymin = -Inf,
+      ymax = Inf,
+      fill = event_name
+    ),
+    inherit.aes = FALSE,
+    alpha = 0.4
+  ) +
+  geom_line(linewidth = 0.43 ) +
+  facet_wrap(~ fuel + grade) +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(
+    title = "U.S. Fuel Prices by Fuel Grade",
+    subtitle = "Prices from 2002 to 2025",
+    x = "Year",
+    y = "Price per gallon",
+    fill = "Major event"
+  ) +
+  theme_minimal()
+```
+
+## Discussion
+1. By checking the plot, "Compare Gasoline Price by Grade", I noticed that all the gasoline grades have similar price trends; the only difference is that "premium" and "midgrade" are always higher than "regular", but it is normal, as they are always higher than regular. Therefore, using grade "all", which is the average price for all grades, will be good enough for analysis.
+
+2. The Iraq War (2003): The war started around March 2003. Due to the war, gas and diesel prices increased by almost 17%, from $1.5 to $1.75. It suggests that the oil supply was affected due to the war/ However, the Iraq War ended around May 2003, then the prices immediately returned to the prices that were observed before the war. It states that the war can affect the fuel price in the short term; once the war ends, the price will be back to the normal level.
+
+3. The 2008 Global Financial Crisis: When the financial crisis occurred, the fuel prices increased. During the middle of the crisis, the fuel prices increased to the highest point, with gasoline increasing by around 33% increased for gasoline ($4.1 per gallon) and 58% increased for diesel ($4.75 per gallon) for diesel compared to the price before the crisis occurred. When the financial crisis started in the middle of 2008, the fuel prices crashed for both fuels:  reduced 64% for gasoline ($1.7) and 58% for diesel ($2). At the end of the financial crisis, the price increased little by little. The financial crisis has a big influence on the fuel price due to the economic market.
+4. The COVID-19 Pandemic: When the pandemic started in 2020, the fuel price did not change too much. However, after a year, when 2021 entered, the fuel price climbed a lot, from around $2.2 for gasoline and $2.4 for diesel, to the highest point, around $5 for gasoline and $5.75 for diesel in the middle of 2022. Then the price started to reduce. When the pandemic ends in the middle of 2023, the price will be around $3.75 for both gasoline and diesel. The pandemic brought big chaos to the fuel market.
+
+5. The plot US Fuel Prices by Fuel Type and Grade shows the price trends and major events for different fuel types and grades. 
+
+6. The trends for gasoline and diesel were almost the same from the plots; however, in some of the highest points, the diesel may have increased more than the gasoline.
+
+# Question 2: How do fuel grade and formulation influence gasoline prices, and how the price differences changed over time?
