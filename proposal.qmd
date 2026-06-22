@@ -1,5 +1,5 @@
 ---
-title: "Final Project - US GAS Prices Analysis"
+title: "Final Project - US Gas Prices Trend Analysis"
 subtitle: "Proposal"
 author: 
   - name: "Zachary Zhicheng Xu"

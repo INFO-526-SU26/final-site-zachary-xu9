@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Zachary Zhicheng Xu">
-<meta name="description" content="US Gas Prices Analysis">
+<meta name="description" content="US Gas Prices Trend Analysis">
 
 <title>Final Project - US GAS Prices Analysis – Project Title</title>
 <style>
@@ -4275,7 +4275,7 @@ vertical-align: -.125em;
 
 <div>
   <div class="description">
-    US Gas Prices Analysis
+    US Gas Prices Trend Analysis
   </div>
 </div>
 
@@ -4335,8 +4335,8 @@ $ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252
 <section id="questions" class="level2">
 <h2 class="anchored" data-anchor-id="questions">Questions</h2>
 <ol type="1">
-<li>How did US Fuel prices change during special events between 1990 and 2025? (The major events may include, but are not limited to, the Iraq War, the Global Financial Crisis, and the COVID-19 Pandemic.)</li>
-<li>How does the grade and formulation influence the gas price? Is the difference changed over?</li>
+<li>How did US Fuel prices change during major events between 1990 and 2025? (the Iraq War 2003, the Global Financial Crisis 2008, and the COVID-19 Pandemic 2020-2022.)</li>
+<li>How do fuel grade and formulation influence gasoline prices, and how the price differences changed over time?</li>
 </ol>
 </section>
 <section id="analysis-plan" class="level2">
@@ -4353,19 +4353,21 @@ $ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252
 </ul></li>
 <li><p>Variables may create:</p>
 <ul>
-<li>year (from date)</li>
-<li>event name *</li>
-<li>event_period * (* from external resource, like the Iraq War, 2003)</li>
+<li>event_name *</li>
+<li>event_start</li>
+<li>event_end</li>
+<li>event_type</li>
 </ul></li>
 <li><p>Visualizations:</p>
 <ul>
-<li>Line plots
+<li>Annotated Line plots
 <ul>
-<li>Long-term gas price analysis</li>
+<li>Long-term gas price trends</li>
+<li>Highlight major event periods using shaded regions and labels</li>
 </ul></li>
 <li>Faceted line plots
 <ul>
-<li>Compare different fuel categories</li>
+<li>Compare responses across fuel categories</li>
 </ul></li>
 </ul>
 <p>(* Additional visualizations may be developed depending on the analysis progress.)</p></li>
@@ -4382,13 +4384,15 @@ $ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252
 <li><p>Variables may create:</p>
 <ul>
 <li>year (from date)</li>
-<li>average price by grade and formulation</li>
+<li>average_price (grade and formulation)</li>
+<li>price_difference (Premium - Regular)</li>
 </ul></li>
 <li><p>Visualizations:</p>
 <ul>
 <li><p>Line plots</p>
 <ul>
-<li>Long-term gas price analysis for different grades</li>
+<li>Long-term trends by grade</li>
+<li>Changes in price gaps over time</li>
 </ul></li>
 <li><p>Box plots</p>
 <ul>
@@ -4400,7 +4404,7 @@ $ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252
 </ul></li>
 <li><p>Narrative</p>
 <ul>
-<li>All plots will have narrative to explain my analysis.</li>
+<li>All visualizations will be accompanied by narrative explanations (key trends, event impacts, differences among fuel types, grades, and formulations)</li>
 </ul></li>
 </ul>
 
@@ -4920,7 +4924,7 @@ $ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252
 <span id="cb4-5"><a href="#cb4-5"></a><span class="co">  - name: &quot;Zachary Zhicheng Xu&quot;</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a><span class="co">    affiliations:</span></span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="co">      - name: &quot;School of Information, University of Arizona&quot;</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="an">description:</span><span class="co"> &quot;US Gas Prices Analysis&quot;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="an">description:</span><span class="co"> &quot;US Gas Prices Trend Analysis&quot;</span></span>
 <span id="cb4-9"><a href="#cb4-9"></a><span class="an">format:</span></span>
 <span id="cb4-10"><a href="#cb4-10"></a><span class="co">  html:</span></span>
 <span id="cb4-11"><a href="#cb4-11"></a><span class="co">    code-tools: true</span></span>
@@ -4962,8 +4966,8 @@ $ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252
 <span id="cb4-51"><a href="#cb4-51"></a></span>
 <span id="cb4-52"><a href="#cb4-52"></a><span class="fu">## Questions</span></span>
 <span id="cb4-53"><a href="#cb4-53"></a></span>
-<span id="cb4-54"><a href="#cb4-54"></a><span class="ss">1.  </span>How did US Fuel prices change during special events between 1990 and 2025? (The major events may include, but are not limited to, the Iraq War, the Global Financial Crisis, and the COVID-19 Pandemic.)</span>
-<span id="cb4-55"><a href="#cb4-55"></a><span class="ss">2.  </span>How does the grade and formulation influence the gas price? Is the difference changed over?</span>
+<span id="cb4-54"><a href="#cb4-54"></a><span class="ss">1.  </span>How did US Fuel prices change during major events between 1990 and 2025? (the Iraq War 2003, the Global Financial Crisis 2008, and the COVID-19 Pandemic 2020-2022.)</span>
+<span id="cb4-55"><a href="#cb4-55"></a><span class="ss">2.  </span>How do fuel grade and formulation influence gasoline prices, and how the price differences changed over time?</span>
 <span id="cb4-56"><a href="#cb4-56"></a></span>
 <span id="cb4-57"><a href="#cb4-57"></a><span class="fu">## Analysis plan</span></span>
 <span id="cb4-58"><a href="#cb4-58"></a></span>
@@ -4978,49 +4982,53 @@ $ price       &lt;dbl&gt; 1.191, 1.191, 1.245, 1.245, 1.242, 1.242, 1.252, 1.252
 <span id="cb4-67"><a href="#cb4-67"></a></span>
 <span id="cb4-68"><a href="#cb4-68"></a><span class="ss">  - </span>Variables may create:</span>
 <span id="cb4-69"><a href="#cb4-69"></a></span>
-<span id="cb4-70"><a href="#cb4-70"></a><span class="ss">    - </span>year (from date)</span>
-<span id="cb4-71"><a href="#cb4-71"></a><span class="ss">    - </span>event name <span class="sc">\*</span></span>
-<span id="cb4-72"><a href="#cb4-72"></a><span class="ss">    - </span>event_period <span class="sc">\*</span> (<span class="sc">\*</span> from external resource, like the Iraq War, 2003)</span>
-<span id="cb4-73"><a href="#cb4-73"></a></span>
-<span id="cb4-74"><a href="#cb4-74"></a><span class="ss">  - </span>Visualizations:</span>
-<span id="cb4-75"><a href="#cb4-75"></a></span>
-<span id="cb4-76"><a href="#cb4-76"></a><span class="ss">    - </span>Line plots</span>
-<span id="cb4-77"><a href="#cb4-77"></a><span class="ss">      - </span>Long-term gas price analysis</span>
-<span id="cb4-78"><a href="#cb4-78"></a><span class="ss">    - </span>Faceted line plots</span>
-<span id="cb4-79"><a href="#cb4-79"></a><span class="ss">      - </span>Compare different fuel categories</span>
-<span id="cb4-80"><a href="#cb4-80"></a></span>
-<span id="cb4-81"><a href="#cb4-81"></a>    (<span class="sc">\*</span> Additional visualizations may be developed depending on the analysis progress.)</span>
+<span id="cb4-70"><a href="#cb4-70"></a><span class="ss">    - </span>event_name <span class="sc">\*</span></span>
+<span id="cb4-71"><a href="#cb4-71"></a><span class="ss">    - </span>event_start</span>
+<span id="cb4-72"><a href="#cb4-72"></a><span class="ss">    - </span>event_end</span>
+<span id="cb4-73"><a href="#cb4-73"></a><span class="ss">    - </span>event_type</span>
+<span id="cb4-74"><a href="#cb4-74"></a></span>
+<span id="cb4-75"><a href="#cb4-75"></a><span class="ss">  - </span>Visualizations:</span>
+<span id="cb4-76"><a href="#cb4-76"></a></span>
+<span id="cb4-77"><a href="#cb4-77"></a><span class="ss">    - </span>Annotated Line plots</span>
+<span id="cb4-78"><a href="#cb4-78"></a><span class="ss">      - </span>Long-term gas price trends</span>
+<span id="cb4-79"><a href="#cb4-79"></a><span class="ss">      - </span>Highlight major event periods using shaded regions and labels</span>
+<span id="cb4-80"><a href="#cb4-80"></a><span class="ss">    - </span>Faceted line plots</span>
+<span id="cb4-81"><a href="#cb4-81"></a><span class="ss">      - </span>Compare responses across fuel categories</span>
 <span id="cb4-82"><a href="#cb4-82"></a></span>
-<span id="cb4-83"><a href="#cb4-83"></a><span class="ss">- </span>Second question:</span>
+<span id="cb4-83"><a href="#cb4-83"></a>    (<span class="sc">\*</span> Additional visualizations may be developed depending on the analysis progress.)</span>
 <span id="cb4-84"><a href="#cb4-84"></a></span>
-<span id="cb4-85"><a href="#cb4-85"></a><span class="ss">  - </span>Variables may use:</span>
+<span id="cb4-85"><a href="#cb4-85"></a><span class="ss">- </span>Second question:</span>
 <span id="cb4-86"><a href="#cb4-86"></a></span>
-<span id="cb4-87"><a href="#cb4-87"></a><span class="ss">    - </span>date</span>
-<span id="cb4-88"><a href="#cb4-88"></a><span class="ss">    - </span>grade</span>
-<span id="cb4-89"><a href="#cb4-89"></a><span class="ss">    - </span>formulation</span>
-<span id="cb4-90"><a href="#cb4-90"></a><span class="ss">    - </span>price</span>
-<span id="cb4-91"><a href="#cb4-91"></a></span>
-<span id="cb4-92"><a href="#cb4-92"></a><span class="ss">  - </span>Variables may create:</span>
+<span id="cb4-87"><a href="#cb4-87"></a><span class="ss">  - </span>Variables may use:</span>
+<span id="cb4-88"><a href="#cb4-88"></a></span>
+<span id="cb4-89"><a href="#cb4-89"></a><span class="ss">    - </span>date</span>
+<span id="cb4-90"><a href="#cb4-90"></a><span class="ss">    - </span>grade</span>
+<span id="cb4-91"><a href="#cb4-91"></a><span class="ss">    - </span>formulation</span>
+<span id="cb4-92"><a href="#cb4-92"></a><span class="ss">    - </span>price</span>
 <span id="cb4-93"><a href="#cb4-93"></a></span>
-<span id="cb4-94"><a href="#cb4-94"></a><span class="ss">    - </span>year (from date)</span>
-<span id="cb4-95"><a href="#cb4-95"></a><span class="ss">    - </span>average price by grade and formulation</span>
-<span id="cb4-96"><a href="#cb4-96"></a></span>
-<span id="cb4-97"><a href="#cb4-97"></a><span class="ss">  - </span>Visualizations:</span>
-<span id="cb4-98"><a href="#cb4-98"></a></span>
-<span id="cb4-99"><a href="#cb4-99"></a><span class="ss">    - </span>Line plots</span>
-<span id="cb4-100"><a href="#cb4-100"></a></span>
-<span id="cb4-101"><a href="#cb4-101"></a><span class="ss">      - </span>Long-term gas price analysis for different grades</span>
-<span id="cb4-102"><a href="#cb4-102"></a></span>
-<span id="cb4-103"><a href="#cb4-103"></a><span class="ss">    - </span>Box plots</span>
-<span id="cb4-104"><a href="#cb4-104"></a></span>
-<span id="cb4-105"><a href="#cb4-105"></a><span class="ss">      - </span>Compare price distributions by grades</span>
-<span id="cb4-106"><a href="#cb4-106"></a><span class="ss">      - </span>identify variability and outlier</span>
-<span id="cb4-107"><a href="#cb4-107"></a></span>
-<span id="cb4-108"><a href="#cb4-108"></a>    (<span class="sc">\*</span> Additional visualizations may be developed depending on the analysis progress.)</span>
-<span id="cb4-109"><a href="#cb4-109"></a></span>
-<span id="cb4-110"><a href="#cb4-110"></a><span class="ss">- </span>Narrative</span>
+<span id="cb4-94"><a href="#cb4-94"></a><span class="ss">  - </span>Variables may create:</span>
+<span id="cb4-95"><a href="#cb4-95"></a></span>
+<span id="cb4-96"><a href="#cb4-96"></a><span class="ss">    - </span>year (from date)</span>
+<span id="cb4-97"><a href="#cb4-97"></a><span class="ss">    - </span>average_price (grade and formulation)</span>
+<span id="cb4-98"><a href="#cb4-98"></a><span class="ss">    - </span>price_difference (Premium - Regular)</span>
+<span id="cb4-99"><a href="#cb4-99"></a></span>
+<span id="cb4-100"><a href="#cb4-100"></a><span class="ss">  - </span>Visualizations:</span>
+<span id="cb4-101"><a href="#cb4-101"></a></span>
+<span id="cb4-102"><a href="#cb4-102"></a><span class="ss">    - </span>Line plots</span>
+<span id="cb4-103"><a href="#cb4-103"></a></span>
+<span id="cb4-104"><a href="#cb4-104"></a><span class="ss">      - </span>Long-term trends by grade</span>
+<span id="cb4-105"><a href="#cb4-105"></a><span class="ss">      - </span>Changes in price gaps over time</span>
+<span id="cb4-106"><a href="#cb4-106"></a></span>
+<span id="cb4-107"><a href="#cb4-107"></a><span class="ss">    - </span>Box plots</span>
+<span id="cb4-108"><a href="#cb4-108"></a></span>
+<span id="cb4-109"><a href="#cb4-109"></a><span class="ss">      - </span>Compare price distributions by grades</span>
+<span id="cb4-110"><a href="#cb4-110"></a><span class="ss">      - </span>identify variability and outlier</span>
 <span id="cb4-111"><a href="#cb4-111"></a></span>
-<span id="cb4-112"><a href="#cb4-112"></a><span class="ss">  - </span>All plots will have narrative to explain my analysis.</span>
+<span id="cb4-112"><a href="#cb4-112"></a>    (<span class="sc">\*</span> Additional visualizations may be developed depending on the analysis progress.)</span>
+<span id="cb4-113"><a href="#cb4-113"></a></span>
+<span id="cb4-114"><a href="#cb4-114"></a><span class="ss">- </span>Narrative</span>
+<span id="cb4-115"><a href="#cb4-115"></a></span>
+<span id="cb4-116"><a href="#cb4-116"></a><span class="ss">  - </span>All visualizations will be accompanied by narrative explanations (key trends, event impacts, differences among fuel types, grades, and formulations)</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

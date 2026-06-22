@@ -1,7 +1,7 @@
 ---
-title: "Project title"
-subtitle: "INFO 526 - Summer 2024 - Final Project"
-author: "Author names"
+title: "US Gas Prices Trend Analysis"
+subtitle: "INFO 526 - Summer 2026 - Final Project"
+author: "Zachary Zhicheng Xu"
 title-slide-attributes:
   data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
   data-background-size: stretch
@@ -16,150 +16,272 @@ execute:
   echo: false
 ---
 
-```{r}
-#| label: load-packages
-#| include: false
-
-# Load packages here
-pacman::p_load(tidymodels,
-               tidyverse)
-
+```{r setup}
+pacman::p_load(tidyverse, here, scales)
 ```
 
-```{r}
-#| label: setup
-#| include: false
+## Motivation
 
-# Plot theme
-ggplot2::theme_set(ggplot2::theme_minimal(base_size = 11))
+Gasoline is important in our lives, especially in states like Arizona, where people rely on personal vehicles for daily transportation. However, in recent years, especially after the COVID-19 Pandemic, the price of gasoline has changed almost day by day, which has made me sensitive to the gasoline price. When 2026 started, the regular gasoline price in the Greater Phoenix Area was just around \$3, but after the Iran War started, the regular gasoline price increased to around \$4.5 in a couple of days. For this reason, I plan to do the US Gas Prices Trend Analysis.
 
-# For better figure resolution
-knitr::opts_chunk$set(
-  fig.retina = 3, 
-  dpi = 300, 
-  fig.width = 6, 
-  fig.asp = 0.618 
+# Data
+
+```{r 1-data}
+gas_prices <- read_csv(here("data", "weekly_gas_prices.csv")) |>
+  mutate(date = as.Date(date))
+
+gas_prices
+```
+
+Source: 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-01/weekly_gas_prices.csv' from U.S. Energy Information Administration (EIA).
+
+# Question 1
+
+How did US Fuel prices change during major events between 2002 and 2025? (the Iraq War 2003, the Global Financial Crisis 2008, and the COVID-19 Pandemic 2020-2022.)
+
+# Major Events
+
+- The Iraq War (2003)
+- The 2008 Global Financial Crisis (2007-2009)
+- The COVID-19 Pandemic (2020-2023)
+
+```{r, 1-events}
+events <- tribble(
+  ~ event_name,
+  ~ event_start,
+  ~ event_end,
+  "The Iraq War",
+  as.Date("2003-01-01"),
+  as.Date("2003-06-01"),
+  
+  "The 2008 Global Financial Crisis",
+  as.Date("2007-08-09"),
+  as.Date("2009-06-30"),
+  
+  "The COVID-19 Pandemic",
+  as.Date("2020-03-11"),
+  as.Date("2023-05-05")
+)
+```
+
+## Compare Gasoline Price by Grade
+
+```{r 1-compare-gasoline}
+compare_gasoline <- gas_prices |>
+  filter(
+    fuel == "gasoline",
+    grade %in% c("all", "regular", "midgrade", "premium"),
+    formulation == "all",
+    date >= as.Date("2002-01-01")
+  )
+
+ggplot(compare_gasoline, aes(x = date, y = price, color = grade)) +
+  geom_line() +
+  scale_color_discrete(breaks = c("all", "regular", "midgrade", "premium")) +
+  labs(
+    x = "Year",
+    y = "Price per Gallon",
+    color = "Gasoline Grade"
   )
 ```
 
-```{r}
-#| label: load-data
-#| include: false
-# Load data here
-data(mtcars)
-mtcars$speed <- mtcars$hp / mtcars$wt
+## Gasoline and Diesel Prices during Major Events
 
-data("penguins")
+```{r, fuel-compare-data}
+fuel_compare <- gas_prices |>
+  filter(date >= as.Date("2002-01-01")) |>
+  filter(
+    (fuel == "gasoline" &
+       grade == "all" &
+       formulation == "all") |
+      (fuel == "diesel" &
+         grade == "all")
+  )
 ```
 
-# Using Quarto for presentations
-
-## Quarto
-
--   The presentation is created using the Quarto CLI
-
--   `##` sets the start of a new slide
-
-## Layouts
-
-You can use plain text
-
-::: columns
-::: {.column width="40%"}
--   or bullet points[^1]
-:::
-
-::: {.column width="60%"}
-or in two columns
-:::
-:::
-
-[^1]: And add footnotes
-
--   like
-
--   this
-
-## Code
-
-```{r, echo=FALSE}
-model <- lm(mpg ~ speed, data = mtcars) 
-
-model |> tidy()
-
-model |> glance()
-
+```{r, fuel_compare-plot, fig.width=15, fig.height=7}
+ggplot(fuel_compare, aes(x = date, y = price, color = fuel)) +
+  geom_rect(
+    data = events,
+    aes(
+      xmin = event_start,
+      xmax = event_end,
+      ymin = -Inf,
+      ymax = Inf,
+      fill = event_name
+    ),
+    inherit.aes = FALSE,
+    alpha = 0.5
+  ) +
+  geom_line(linewidth = 0.6) +
+  scale_x_date(date_breaks = "1 years", date_labels = "%Y") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_color_manual(values = c("gasoline" = "blue", "diesel" = "red")) +
+  labs(
+    subtitle = "Prices from 2002 to 2025",
+    x = "Year",
+    y = "Price per gallon",
+    color = "Fuel",
+    fill = "Major Event"
+  ) +
+  theme_minimal()
 ```
 
-## Plots
+## U.S. Fuel Prices by Fuel Grade
 
-```{r}
-penguins |>
-  mutate(species = ifelse(species == "Adelie", "Adelie", "Other")) |>
-  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point()
+```{r 1-fuel-all}
+fuel_all <- gas_prices |>
+  filter(formulation == "all" | is.na(formulation))
 ```
 
-## Plot and text
-
-::: columns
-::: {.column width="50%"}
--   Some text
-
--   goes here
-:::
-
-::: {.column width="50%"}
-```{r, warning=FALSE, fig.width=5.5}
-penguins |>
-  ggplot(aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot(linewidth = 0.75,
-               outlier.size = 2.5) +
-  theme_minimal(base_size = 15) +
-  theme(legend.key.size = unit(0.8, "cm"))
-```
-:::
-:::
-
-# A new section...
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r}
-penguins |> 
-  head() |>
-  kableExtra::kable() |>
-  kableExtra::kable_styling()
+```{r 1-all-plot, fig.width=15, fig.height=5}
+ggplot(fuel_all, aes(x = date, y = price)) +
+  geom_rect(
+    data = events,
+    aes(
+      xmin = event_start,
+      xmax = event_end,
+      ymin = -Inf,
+      ymax = Inf,
+      fill = event_name
+    ),
+    inherit.aes = FALSE,
+    alpha = 0.4
+  ) +
+  geom_line(linewidth = 0.43) +
+  facet_wrap(~ fuel + grade) +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(
+    subtitle = "Prices from 2002 to 2025",
+    x = "Year",
+    y = "Price per gallon",
+    fill = "Major event"
+  ) +
+  theme_minimal()
 ```
 
-## Images
+## Conclusion
 
-![Image credit: Danielle Navarro, Percolate.](images/watercolour_sys02_img34_teacup-ocean.png){fig-align="center" width="500"}
+- 
 
-## Math Expressions {.smaller}
+  1.  All grades(gasoline and diesel) have similar long-term price trends.
 
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. \$\\alpha+\\beta\$ renders $\alpha + \beta$. You can use the display style with double dollar signs:
+- 
 
-```         
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
+  2.  The gasoline and diesel prices would increase a lot during the major events. The price would reach the highest point in the middle of the major events, and then would decrease and return to the prices before the major events happened.
+
+- 
+
+  3.  The price trends for all the major events are similar.
+
+- 
+
+  4.  The major events can strongly influence the gasoline and diesel prices.
+
+- 
+
+  5.  It seems like the influence is limited during the major events period; once the events end, the price will be back to normal.
+
+# Question 2
+
+How do fuel grade and formulation influence gasoline prices, and how the price differences changed over time?
+
+## Regular and Midgrade Price Difference
+
+```{r 2-gas-grade}
+gasoline_grade <- gas_prices |>
+  filter(
+    fuel == "gasoline",
+    grade %in% c("regular", "midgrade", "premium"),
+    formulation == "all"
+  )
 ```
 
-$$
-\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i
-$$
+```{r 2-price-diff}
+price_diff <- gas_prices |>
+  filter(fuel == "gasoline",
+         grade %in% c("regular", "midgrade", "premium"),
+         formulation == "all") |>
+  select(date, grade, price) |>
+  pivot_wider(names_from = grade, values_from = price) |>
+  mutate(diff_reg_mid = midgrade - regular) |>
+  mutate(diff_reg_prem = premium - regular) |>
+  mutate(diff_mid_prem = premium - midgrade)
+```
 
-Limitations:
+```{r 2-reg-mid}
+ggplot(price_diff, aes(x = date, y = diff_reg_mid)) +
+  geom_line(color = "royalblue") +
+  labs(x = "Year", y = "Price Difference") +
+  theme_minimal()
+```
 
-1.  The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
+## Regular and Premium Price Difference
 
-2.  There should not be spaces after the opening `$` or before the closing `$`.
+```{r 2-reg-pre}
+ggplot(price_diff, aes(x = date, y = diff_reg_prem)) +
+  geom_line(color = "royalblue") +
+  labs(x = "Year", y = "Price Difference") +
+  theme_minimal()
+```
 
-# Wrap up
+## Midgrade and Premium Price Difference
 
-## Feeling adventurous?
+```{r 2-mid-pre}
+ggplot(price_diff, aes(x = date, y = diff_mid_prem)) +
+  geom_line(color = "royalblue") +
+  labs(x = "Year", y = "Price Difference") +
+  theme_minimal()
+```
 
--   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+## Distribution of Gasoline Prices by Grade
 
--   But some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs.
+```{r 2-dis-gas-grade}
+ggplot(gasoline_grade, aes(x = grade, y = price, fill = grade)) +
+  geom_boxplot() +
+  labs(x = "Grade", y = "Price per Gallon") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Price Difference between Reformulated and Conventional Gasoline (Ref. minus Con.)
+
+```{r 2-form-price-diff-plot}
+form_price_diff <- gas_prices |>
+  filter(
+    fuel == "gasoline",
+    grade %in% c("regular", "midgrade", "premium"),
+    formulation %in% c("conventional", "reformulated")
+  ) |>
+  select(date, grade, formulation, price) |>
+  pivot_wider(names_from = formulation, values_from = price) |>
+  mutate(price_difference =
+           reformulated - conventional)
+
+ggplot(form_price_diff, aes(x = date, y = price_difference)) +
+  geom_line(color = "darkblue") +
+  facet_wrap( ~ factor(grade, levels = c("regular", "midgrade", "premium")), ncol = 1) +
+  labs(x = "Year", y = "Price Difference") +
+  theme_minimal()
+```
+
+## Conclusion
+
+- 
+
+  1.  The difference between regular and other higher-grade gasoline is increasing year by year.
+
+- 
+
+  2.  Higher-grade gasolines have the highest outliers.
+
+- 
+
+  3.  In the long-term trend, the reformed gasoline becomes more expensive than the conventional gasoline.
+
+- 
+
+  4.  The vehicles that use higher grade gasoline will spend more and more money in the long-term trend; the vehicles that use regular grade gasoline have more cost-effectiveness in the long-term.
+
+# Thank you for watching my presentation!
+[Back to Main Page](https://info-526-su26.github.io/final-site-zachary-xu9/)
