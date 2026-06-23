@@ -1,6 +1,5 @@
 project:
   type: website
-  output-dir: docs
 
 website:
   title: Project Title
@@ -14,7 +13,7 @@ website:
       - text: Proposal
         href: proposal.qmd
       - text: Presentation
-        href: presentation.html
+        href: presentation.qmd
       - text: About
         href: about.qmd
 
